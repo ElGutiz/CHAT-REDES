@@ -1,4 +1,5 @@
 from argparse import ArgumentParser
+import base64
 import slixmpp
 import sys
 import asyncio
@@ -76,17 +77,17 @@ class Add_User(slixmpp.ClientXMPP):
         self.disconnect()
     
 class Send_Private_Message(slixmpp.ClientXMPP):
-     def __init__(self, jid, password, recipient, message):
-          slixmpp.ClientXMPP.__init__(self, jid, password)
-          self.recipient = recipient
-          self.msg = message
-          self.add_event_handler("session_start", self.start)
+    def __init__(self, jid, password, recipient, message):
+        slixmpp.ClientXMPP.__init__(self, jid, password)
+        self.recipient = recipient
+        self.msg = message
+        self.add_event_handler("session_start", self.start)
 
-     async def start(self, event):
-          self.send_presence()
-          await self.get_roster()
-          self.send_message(mto=self.recipient,mbody=self.msg,mtype='chat')
-          self.disconnect()
+    async def start(self, event):
+        self.send_presence()
+        await self.get_roster()
+        self.send_message(mto=self.recipient,mbody=self.msg,mtype='chat')
+        self.disconnect()
 
 class Show_User(slixmpp.ClientXMPP):
     def __init__(self, jid, password, friend):
@@ -208,9 +209,8 @@ class Register_Account(slixmpp.ClientXMPP):
         create['type'] = 'set'
         fragment = ET.fromstring("<query xmlns='jabber:iq:register'><username>Hekkice</username><password>1213</password><email>cutci7vu@alumchat.fun</email></query>")
         create.append(fragment)
-        create.send()
         try:
-            #create.send()
+            create.send()
             print('\033[1;31;40m')
             print("New Account Created")
 
@@ -223,4 +223,36 @@ class Register_Account(slixmpp.ClientXMPP):
         except Exception as e:     
             print(e)  
 
+        self.disconnect()
+
+class Send_Group_Message(slixmpp.ClientXMPP):
+    def __init__(self, jid, password, room, nick):
+        slixmpp.ClientXMPP.__init__(self, jid, password)
+        self.room = room
+        self.nick = nick
+
+        self.add_event_handler("session_start", self.start)
+        self.add_event_handler("groupchat_message", self.muc_message)
+
+    async def start(self, event):
+        await self.get_roster()
+        self.send_presence()
+        self.plugin['xep_0045'].join_muc(self.room, self.nick)
+    
+    def muc_message(self, msg):
+        message = input("Write the message: ")
+        self.send_message(mto=self.room, mbody=message, mtype='groupchat')
+
+class Send_File(slixmpp.ClientXMPP):
+    def __init__(self, jid, password, recipient, file_):
+        slixmpp.ClientXMPP.__init__(self, jid, password)
+        self.file_ = file_
+        self.recipient = recipient
+        self.add_event_handler("session_start", self.start)
+
+    async def start(self, event):
+        self.send_presence()
+        await self.get_roster()
+        
+        self.send_message(mto=self.recipient,mbody=self.file_,msubject='send_file',mtype='chat')
         self.disconnect()

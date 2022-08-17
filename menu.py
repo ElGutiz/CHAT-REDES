@@ -16,9 +16,11 @@ def second_menu():
     print('\n 1) Show Users List')
     print('\n 2) Show User Information')
     print('\n 3) Add User as Friend')
-    print('\n 4) Send Message ')
+    print('\n 4) Send Private Message ')
     print('\n 5) Define Presence Message ')
     print('\n 6) Delete Account ')
+    print('\n 7) Send Group Message ')
+    print('\n 8) Send File ')
     print('\n !) Log Out \n')
 
     print('\033[0;37;40m')
@@ -45,8 +47,8 @@ while(exit1):
         xmpp.connect()
         xmpp.process()
     elif(option1 == 2):
-        username = 'dwdwd@alumchat.fun'
-        password = '123'
+        username = 'Corado@alumchat.fun'
+        password = 'Diciembre22'
         exit2 = True
         while(exit2):
             second_menu()
@@ -83,13 +85,37 @@ while(exit1):
                 xmpp.connect()
                 xmpp.process(forever=False)
             
-            if(option2 == 6):
+            elif(option2 == 6):
                 xmpp = Delete_Account(username, password)
                 xmpp.connect()
                 xmpp.process(forever=False)
                 exit2 = False
             
             elif(option2 == 7):
+                try:
+                    nickname = 'corados'
+                    room = "python.es@conference.alumchat.fun"
+                    xmpp = Send_Group_Message(username, password, room, nickname)
+                    xmpp.register_plugin('xep_0030')
+                    xmpp.register_plugin('xep_0045')
+                    xmpp.register_plugin('xep_0199')
+                    xmpp.connect()
+                    xmpp.process(forever=False)
+                except KeyboardInterrupt as e:
+                    print('Group Chat Finished')
+                    xmpp.disconnect()
+
+            elif(option2 == 8):
+                friend = "javierbot@alumchat.fun"
+
+                with open(r"C:\Users\Joseph\Desktop\Njsccc.txt",'rb') as img:
+                    file_ = base64.b64encode(img.read()).decode('utf-8')
+
+                xmpp = Send_File(username, password, friend, file_)
+                xmpp.connect()
+                xmpp.process(forever=False)
+
+            elif(option2 == 9):
                 exit2 = False
 
             else:
