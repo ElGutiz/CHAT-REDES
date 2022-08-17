@@ -10,3 +10,11 @@ Lecciones aprendidas:
 
 - Intentar trabajar en otros lenguajes dado a que pueden tener mejores librerias que cumplan los mismos objetivos.
 - Investigar otras librerias del mismo lenguaje que pueden facilitar el trabajo y que cumplan los mismos objetivos.
+
+Funciones Implementadas:
+
+- Enviar Mensaje a un Usuario y a un Grupo
+- Enviar Documento en Base64
+- Agregar a un Contacto
+- Eliminar Cuenta
+- Mostrar la Informacion de Todos Los Usuarios y de Uno en Especifico
