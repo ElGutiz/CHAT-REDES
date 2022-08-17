@@ -47,8 +47,8 @@ while(exit1):
         xmpp.connect()
         xmpp.process()
     elif(option1 == 2):
-        username = 'Corado@alumchat.fun'
-        password = 'Diciembre22'
+        username = input("Username: ")
+        password = input("Password: ")
         exit2 = True
         while(exit2):
             second_menu()
@@ -93,8 +93,8 @@ while(exit1):
             
             elif(option2 == 7):
                 try:
-                    nickname = 'corados'
-                    room = "python.es@conference.alumchat.fun"
+                    nickname = input("Your nickname: ")
+                    room = input("Room: ")
                     xmpp = Send_Group_Message(username, password, room, nickname)
                     xmpp.register_plugin('xep_0030')
                     xmpp.register_plugin('xep_0045')
@@ -106,7 +106,7 @@ while(exit1):
                     xmpp.disconnect()
 
             elif(option2 == 8):
-                friend = "javierbot@alumchat.fun"
+                friend = input("User you want to send the file: ")
 
                 with open(r"C:\Users\Joseph\Desktop\Njsccc.txt",'rb') as img:
                     file_ = base64.b64encode(img.read()).decode('utf-8')
